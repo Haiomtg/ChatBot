@@ -28,6 +28,10 @@ pairs = [
         ["Please tell me the location for the weather."]
     ],
     [
+        r"time (.*)",
+        ["Please tell me the location for the time checking."]
+    ],
+    [
         r"(.*)",
         ["I'm sorry, I don't understand that."]
     ]
@@ -61,5 +65,37 @@ def get_weather(location):
             return f"The weather in {location} is {weather_desc} with a temperature of {temperature}°C."
         else:
             return "Weather data not available."
+    else:
+        return f"Error: {data.get('message', 'Location not found.')}"
+    
+def get_time(location):
+    apiGeo_key = "12461a8e04d978dc0ad0656c14540fd5"  # Replace with your OpenWeatherMap API key
+    geocoding_url = f"http://api.openweathermap.org/data/2.5/weather?q={location}&appid={apiGeo_key}"
+    
+    # Get latitude and longitude from the Geocoding API
+    responseGeo = requests.get(geocoding_url)
+    data = responseGeo.json()
+    if responseGeo.status_code == 200:
+        lat = data["coord"]["lat"]
+        lon = data["coord"]["lon"]
+
+        timeZone_url = f"https://api.api-ninjas.com/v1/timezone?lat={lat}&lon={lon}"
+        api_key = 'RaSiEYsbffrO9+0ashd0WQ==EoaAhSr5RODbrE2P'
+        response = requests.get(timeZone_url, headers={'X-Api-Key': api_key})
+    
+        if response.status_code == requests.codes.ok:
+            time_zone_data = response.json()  # Parse the JSON response
+            timezone = time_zone_data.get("timezone", "Timezone not found")  # Get the timezone value
+
+            time_url = f"http://worldtimeapi.org/api/timezone/{timezone}"
+            response = requests.get(time_url)    
+            if response.status_code == 200:
+                time_data = response.json()
+                current_time = time_data.get("datetime", "Datetime not Found")
+                return f"The current time in {location} is {current_time}."
+            else:
+                return "Error: Unable to retrieve time data. Please check the location."
+        else:
+            return "Error: Unable to retrieve time data. Please check the location."
     else:
         return f"Error: {data.get('message', 'Location not found.')}"

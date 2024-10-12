@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import scrolledtext, simpledialog, messagebox
-from chatbot_service import get_weather, chatbot  # Importing the service functions
+from chatbot_service import get_weather, chatbot, get_time  # Importing the service functions
 
 # Function to handle user input and chatbot response
 def send_message():
@@ -17,6 +17,11 @@ def send_message():
         if location:
             weather_info = get_weather(location)
             chat_area.insert(tk.END, "Chatbot: " + weather_info + "\n")
+    elif "time" in user_input.lower():
+        location = simpledialog.askstring("Location", "Please enter the location for the time:")
+        if location:
+            time_info = get_time(location)
+            chat_area.insert(tk.END, "Chatbot: " + time_info + "\n")
     else:
         response = chatbot.respond(user_input)
         chat_area.insert(tk.END, "Chatbot: " + response + "\n")
