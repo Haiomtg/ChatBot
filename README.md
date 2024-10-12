@@ -56,6 +56,18 @@ This chatbot is designed to assist users with various tasks, including weather i
 - **Usage**: 
   - Input: Click the "Quit" button or type `quit`.
 
+### 8. **Mathematical Expression Evaluation
+Functionality: Users can perform calculations and evaluate mathematical expressions, including basic arithmetic and advanced functions.
+Usage:
+Input: calculate [expression]
+Example: calculate 2 * (3 + 5)
+
+### 9. Equation Solving for Variable x
+Functionality: Users can solve equations for the variable x.
+Usage:
+Input: solve [equation] for x
+Example: solve 2*x + 3 = 7 for x
+
 ## How to Use
 1. **Start the Application**: Run the chatbot application to open the GUI.
 2. **Interact with the Chatbot**: Type your message in the input field and click the "Send" button or press Enter.

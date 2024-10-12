@@ -3,6 +3,9 @@ from nltk.chat.util import Chat, reflections
 import re
 import random
 from googletrans import Translator
+import operator
+import math
+import sympy as sp
 
 # Define pairs of patterns and responses
 pairs = [
@@ -41,6 +44,14 @@ pairs = [
     [
         r"translate (.*) to (.*)",
         ["Translating..."]
+    ],
+    [
+        r"calculate (.*)",
+        ["Calculating..."]
+    ],
+    [
+        r"solve (.*) for x",
+        ["Solving..."]
     ]
 ]
 
@@ -49,6 +60,29 @@ chatbot = Chat(pairs, reflections)
 
 # Initialize the translator
 translator = Translator()
+
+def evaluate_math_expression(expression):
+    try:
+        # Remove any unwanted characters
+        expression = re.sub(r'[^0-9+\-*/().^sin|cos|tan|log|sqrt| ]', '', expression)
+        
+        # Replace power operator for Python's eval
+        expression = expression.replace('^', '**')
+        
+        # Evaluate the expression
+        result = eval(expression, {"__builtins__": None}, {
+            "sin": math.sin,
+            "cos": math.cos,
+            "tan": math.tan,
+            "log": math.log,
+            "sqrt": math.sqrt,
+            "pi": math.pi,
+            "e": math.e
+        })
+        
+        return f"The result is: {result}"
+    except Exception as e:
+        return "Error: Invalid mathematical expression."
 
 def translate_text(text, dest_language):
     try:
@@ -118,3 +152,22 @@ def get_time(location):
         return f"Error: {data.get('message', 'Location not found.')}"
 
 
+
+
+def solve_equation(equation):
+    try:
+        # Define the variable
+        x = sp.symbols('x')
+        
+        # Split the equation into left and right parts
+        left, right = equation.split('=')
+        
+        # Create the sympy equation
+        sympy_eq = sp.Eq(sp.sympify(left.strip()), sp.sympify(right.strip()))
+        
+        # Solve the equation
+        solution = sp.solve(sympy_eq, x)
+        
+        return f"The solution for x is: {solution}"
+    except Exception as e:
+        return "Error: Invalid equation format."
