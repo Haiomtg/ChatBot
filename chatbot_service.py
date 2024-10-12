@@ -1,5 +1,8 @@
 import requests
 from nltk.chat.util import Chat, reflections
+import re
+import random
+from googletrans import Translator
 
 # Define pairs of patterns and responses
 pairs = [
@@ -34,11 +37,25 @@ pairs = [
     [
         r"(.*)",
         ["I'm sorry, I don't understand that."]
+    ],
+    [
+        r"translate (.*) to (.*)",
+        ["Translating..."]
     ]
 ]
 
 # Create a chatbot instance
 chatbot = Chat(pairs, reflections)
+
+# Initialize the translator
+translator = Translator()
+
+def translate_text(text, dest_language):
+    try:
+        translation = translator.translate(text, dest=dest_language)
+        return f"Translation: {translation.text}"
+    except Exception as e:
+        return "Error: Unable to perform translation."
 
 # Function to get weather data
 def get_weather(location):
@@ -99,3 +116,5 @@ def get_time(location):
             return "Error: Unable to retrieve time data. Please check the location."
     else:
         return f"Error: {data.get('message', 'Location not found.')}"
+
+

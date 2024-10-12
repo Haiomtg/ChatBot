@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import scrolledtext, simpledialog, messagebox
-from chatbot_service import get_weather, chatbot, get_time  # Importing the service functions
+from chatbot_service import get_weather, chatbot, get_time, translate_text  # Importing the service functions
+import re
 
 # Function to handle user input and chatbot response
 def send_message():
@@ -22,6 +23,13 @@ def send_message():
         if location:
             time_info = get_time(location)
             chat_area.insert(tk.END, "Chatbot: " + time_info + "\n")
+    elif "translate" in user_input.lower():
+        match = re.search(r'translate (.+) to (.+)', user_input.lower())
+        if match:
+            text_to_translate = match.group(1).strip()
+            dest_language = match.group(2).strip()
+            translation = translate_text(text_to_translate, dest_language)
+            chat_area.insert(tk.END, "Chatbot: " + translation + "\n")
     else:
         response = chatbot.respond(user_input)
         chat_area.insert(tk.END, "Chatbot: " + response + "\n")
