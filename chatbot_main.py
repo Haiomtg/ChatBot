@@ -73,11 +73,11 @@ def save_chat():
 root = tk.Tk()
 root.title("Chatbot")
 
-chat_area = scrolledtext.ScrolledText(root, state='disabled', width=50, height=20)
-chat_area.grid(row=0, column=0, columnspan=4)
+chat_area = scrolledtext.ScrolledText(root, state='disabled')
+chat_area.grid(row=0, column=0, columnspan=5)
 
-user_entry = tk.Entry(root, width=48)
-user_entry.grid(row=1, column=0, columnspan=3)
+user_entry = tk.Entry(root, width=50)
+user_entry.grid(row=1, column=0, columnspan=4)
 
 send_button = tk.Button(root, text="Send", command=send_message)
 send_button.grid(row=1, column=4)

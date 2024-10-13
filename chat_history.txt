@@ -1,0 +1,5 @@
+You: hey
+Chatbot: Hello!
+You: weather
+Chatbot: The weather in Sydney is broken clouds with a temperature of 12.53°C.
+
